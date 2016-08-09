@@ -1,0 +1,8 @@
+version: '2'
+services:
+  scala_build:
+    build: .
+    volumes:
+    - .:/app
+    ports:
+     - "5005:5005"
