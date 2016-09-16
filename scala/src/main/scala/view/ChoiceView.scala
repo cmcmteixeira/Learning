@@ -16,6 +16,7 @@ trait ChoiceView {
   def render(): Action ={
     printerService.menu(actions.map((actionsTuple) => actionsTuple.option))
     printerService.sentence("Please choose an option:")
+
     val index = input.requestInt((x:Int) => x > 0 && x < actions.length)
     actions(index-1).action
   }

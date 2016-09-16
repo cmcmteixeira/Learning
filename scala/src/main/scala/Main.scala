@@ -12,6 +12,7 @@ object Main extends Injectable{
 
     implicit val inj:Injector = new ApplicationModule
     val initView = inject[InitialView]
+
     var view:View = initView
     while(true){
       val action = view.render()

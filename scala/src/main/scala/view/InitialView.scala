@@ -11,7 +11,7 @@ import view.task.{CreateTaskView, DeleteTaskView, ReadTaskView, UpdateTaskView}
   */
 class InitialView(implicit inj: Injector) extends View with ChoiceView with Injectable{
 
-  override def actions : Array[ViewActionPair]= Array[ViewActionPair](
+  override def actions : Array[ViewActionPair]= Array(
     ViewActionPair("Create Task", new RedirectAction {
       override def view: View = new CreateTaskView()
     }),
