@@ -9,7 +9,10 @@ libraryDependencies += "org.scalactic" %% "scalactic" % "2.2.6"
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 libraryDependencies += "org.scaldi" %% "scaldi" % "0.5.7"
 libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.2.2" % "test"
+libraryDependencies += "com.github.scopt" %% "scopt" % "3.5.0"
+libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.4.4"
 
+resolvers += Resolver.sonatypeRepo("public")
 
 val sampleTask = TaskKey[Unit]("print-separator")
 sampleTask := {

@@ -6,5 +6,5 @@ RUN echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 WORKDIR /app
-CMD  ./scripts/run.sh
+CMD  ./scripts/test.sh
 

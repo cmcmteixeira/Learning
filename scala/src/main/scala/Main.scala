@@ -1,23 +1,9 @@
-import entities.Task
-import scaldi.{Injectable, Injector}
-import view.{InitialView, View}
+import client.{Application, ApplicationModule, ConfigurationModule}
+import scaldi.Injector
 
-
-/**
-  * Created by carlos on 7/4/16.
-  */
-object Main extends Injectable{
-  def main(args: Array[String]) {
-    var tasks : Array[Task] = new Array[Task](0)
-
-    implicit val inj:Injector = new ApplicationModule
-    val initView = inject[InitialView]
-
-    var view:View = initView
-    while(true){
-      val action = view.render()
-      view = action.perform()
-    }
+object Main {
+  def main(args: Array[String]): Unit = {
+    implicit val injector: Injector = new ApplicationModule :: (new ConfigurationModule)
+    new Application start(args)
   }
 }
-
