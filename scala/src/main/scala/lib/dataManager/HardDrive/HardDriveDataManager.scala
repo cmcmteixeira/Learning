@@ -1,7 +1,7 @@
 package lib.dataManager.HardDrive
 
 import java.io._
-
+import scala.reflect.ClassTag
 import lib.dataManager.{DataManager, Resource}
 import scaldi.{Injectable, Injector}
 
@@ -9,27 +9,26 @@ import scaldi.{Injectable, Injector}
   * TODO: Plz optimize access to data
   * @tparam T
   */
-class HardDriveDataManager[T <: Resource with Serializable ](implicit inj: Injector) extends DataManager[T] with Injectable {
+class HardDriveDataManager[T <: Resource with Serializable : ClassTag ](implicit inj: Injector) extends DataManager[T] with Injectable {
   val baseDir = inject[String](identified by 'baseDir)
   val fileName= inject[String](identified by 'fileName)
+
   private def save(resources: Seq[T]): Unit = {
     val file = new File(s"$baseDir/$fileName")
     file.getParentFile.mkdirs()
     file.createNewFile()
     val os = new ObjectOutputStream(new FileOutputStream(file,false))
-    os.writeObject(resources)
+    os.writeObject(resources.toArray)
     os.close()
   }
-  private def loadResources():Seq[T]={
+  private def loadResources():Seq[T]= {
     try {
       val is = new ObjectInputStream(new FileInputStream(s"$baseDir/$fileName"))
-      val obj = is.readObject()
+      val obj = is.readObject().asInstanceOf[Array[T]]
       is.close()
-      return obj.asInstanceOf[Seq[T]]
+      return obj
     } catch {
-        case a : Throwable => println(a)
-    } finally {
-      Seq.empty[T]
+      case a : Throwable => println(a)
     }
     Seq.empty[T]
   }
@@ -47,7 +46,7 @@ class HardDriveDataManager[T <: Resource with Serializable ](implicit inj: Injec
   }
 
   override def deleteResource(res: T): Option[T] = {
-    save ((loadResources filter (_ == res)))
+    save (loadResources filter (_ == res))
     Option(res)
   }
 }

@@ -1,6 +1,7 @@
 package client.action
 
 import client.packet.Packet
+import client.printer.TaskListPrinter
 import client.task.Task
 import lib.dataManager.DataManager
 import lib.logger.Logger
@@ -14,7 +15,7 @@ protected abstract class Actions(implicit inj: Injector) extends Injectable{
 class DeleteAction(packet: Packet)(implicit inj: Injector) extends Actions with Action {
   override def perform(): Unit = {
     logger.info(this.getClass.getName,"Delete",s"Removing task with index ${packet.index}")
-    dataManager deleteResource(new Task(packet.index))
+    dataManager deleteResource new Task(packet.index)
     logger.info(this.getClass.getName,"Delete",s"Removed task with index ${packet.index}")
   }
 }
@@ -25,7 +26,8 @@ class ReadAction(packet: Packet)(implicit inj: Injector) extends Actions with Ac
     val tasks : Seq[Task] = {
       dataManager readResource (_ => true)
     }
-    tasks foreach println
+    val printer = new TaskListPrinter
+    printer.print(tasks)
     logger.info(this.getClass.getName,"List",s"Listing ${tasks.length} tasks")
   }
 }
@@ -43,17 +45,17 @@ class UpdateAction(packet: Packet)(implicit inj: Injector) extends Actions with 
 
 class CreateAction(packet: Packet)(implicit inj: Injector) extends Actions with Action{
   override def perform(): Unit = {
-    logger.info(this.getClass.getName,"Creating",s"Removing task with index ${packet.index}")
+    logger.info(this.getClass.getName,"Creating",s"Creating task with index ${packet.index}")
     val newId = dataManager
       .readResource(_ => true)
       .foldLeft(0)((currMax: Int,task:Task) => {
         currMax max task.id.get
-      })
-    dataManager.createResource(new Task(
+      }) + 1
+    val resource = dataManager.createResource(new Task(
       Some(newId),
       packet.description,
       packet.project
-    ));
-    logger.info(this.getClass.getName,"Created",s"Removed task with index ${packet.index}")
+    ))
+    logger.info(this.getClass.getName,"Created",s"Created task with index ${resource.get.id}")
   }
 }
