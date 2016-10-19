@@ -14,7 +14,7 @@ class TaskListPrinter extends ListPrinter[Seq[Task],Task]{
   protected def printProjectHeader(proj: String): Unit ={
     println(proj)
   }
-  implicit override def elemToString(obj: Task): String = {
+  override def elemToString(obj: Task): String = {
     s"${obj.id.get} -  ${obj.description.getOrElse("")}"
   }
   override def print(obj: Seq[Task]): Unit = {

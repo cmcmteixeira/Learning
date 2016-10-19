@@ -1,7 +1,7 @@
 package client.action
 
 import client.packet.Packet
-import client.printer.TaskListPrinter
+import client.printer.{ListPrinter, TaskListPrinter}
 import client.task.Task
 import lib.dataManager.DataManager
 import lib.logger.Logger
@@ -10,6 +10,7 @@ import scaldi.{Injectable, Injector}
 protected abstract class Actions(implicit inj: Injector) extends Injectable{
   val dataManager = inject[DataManager[Task]]
   val logger = inject[Logger]
+  val listPrinter = inject[ListPrinter[Seq[Task],Task]]
 }
 
 class DeleteAction(packet: Packet)(implicit inj: Injector) extends Actions with Action {
