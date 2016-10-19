@@ -1,6 +1,7 @@
 package client
 
-import client.printer.{ListPrinter, TaskListPrinter}
+import client.printer.console.{ConsolePrinter, Printer}
+import client.printer.{ListView, TaskListView}
 import client.router.Router
 import client.task.Task
 import lib.dataManager.DataManager
@@ -13,5 +14,6 @@ class ApplicationModule extends Module {
   bind[Router] to new Router
   bind[DataManager[Task]] to new HardDriveDataManager[Task]
   bind[Logger] to new ConsoleLogger
-  bind[ListPrinter[Seq[Task],Task]] to new TaskListPrinter
+  bind[Printer] to new ConsolePrinter
+  bind[ListView[Seq[Task],Task]] to new TaskListView
 }

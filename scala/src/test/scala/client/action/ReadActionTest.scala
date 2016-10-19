@@ -9,14 +9,15 @@ import org.scalamock.function.FunctionAdapter1
   * Created by carlos on 10/19/16.
   */
 class ReadActionTest extends UnitSpec {
-  "The Read Action" should "call the read resources method" in {
-      (dataManager.readResource _)
-        .expects(*)
-        .returns(Nil)
+  "The Read Action" should "call the read resources method and update the view" in {
+    (dataManager.readResource _)
+      .expects(*)
+      .returns(Nil)
 
-      val deleteAction = new ReadAction(Packet(
-        Some(PacketAction.Read)
-      )).perform()
+    (taskView.update _).expects(*)
+    new ReadAction(Packet(
+      Some(PacketAction.Read)
+    )).perform()
   }
 
 }
