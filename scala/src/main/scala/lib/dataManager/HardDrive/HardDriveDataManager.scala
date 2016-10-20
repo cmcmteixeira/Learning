@@ -1,9 +1,11 @@
 package lib.dataManager.HardDrive
 
 import java.io._
-import scala.reflect.ClassTag
+
 import lib.dataManager.{DataManager, Resource}
 import scaldi.{Injectable, Injector}
+
+import scala.reflect.ClassTag
 
 /**
   * TODO: Plz optimize access to data
